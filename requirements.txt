@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+streamlit
+requests
+langchain-groq
+langgraph
+yfinance
+feedparser
+pydantic
+python-dotenv
