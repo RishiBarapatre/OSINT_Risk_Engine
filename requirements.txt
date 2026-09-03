@@ -8,3 +8,4 @@ yfinance
 feedparser
 pydantic
 python-dotenv
+slowapi
