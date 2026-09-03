@@ -53,7 +53,8 @@ def assessor_node(state: OSINTState) -> OSINTState:
         "CATEGORIES TO EXTRACT:\n"
         "1. Financial Risk (ONLY genuine material red flags based on benchmark rules)\n"
         "2. Legal/Regulatory Risk (e.g., SEC/DOJ investigations, major antitrust lawsuits, government enforcement)\n"
-        "3. Operational/Governance Risk (e.g., auditor departures, accounting restatements, leadership turmoil, cyber breaches)\n\n"
+        "3. Operational/Governance Risk (e.g., auditor departures, accounting restatements, leadership turmoil, "
+        "cyber breaches, supply-chain disruption, key supplier fraud/legal investigations, tariff or trade-compliance exposure)\n\n"
 
         "If no genuine, material risks meet these threshold criteria, state 'No significant risks identified.'\n"
         "Output ONLY a bulleted list of identified risks grouped by category. Do not include introductory filler."
