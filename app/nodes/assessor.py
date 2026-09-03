@@ -20,7 +20,7 @@ def assessor_node(state: OSINTState) -> OSINTState:
         raise ValueError("GROQ_API_KEY is missing! Check your .env file.")
 
     llm = ChatGroq(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=0,
         api_key=groq_api_key
     )
@@ -33,7 +33,8 @@ def assessor_node(state: OSINTState) -> OSINTState:
         "Review the provided financial metrics, news headlines, and official SEC 8-K disclosures for the target company.\n\n"
 
         "FINANCIAL BENCHMARK RULES (Do NOT flag as a risk if healthy):\n"
-        "- Debt-to-Equity: Below 100% (1.0) is LOW and HEALTHY. Only flag as a financial risk if Debt-to-Equity is ABOVE 150% (1.5).\n"
+        "- Debt-to-Equity is provided as a PERCENTAGE (100% = a 1:1 ratio, i.e. equal debt and equity)."
+        "Below 100% is LOW and HEALTHY. Only flag as a financial risk if it is ABOVE 150%.\n"
         "- Liquidity: Current Ratio above 1.0 and Quick Ratio above 0.8 are healthy. Only flag if below these thresholds.\n"
         "- Valuation: High P/E or Price-to-Book alone is NOT a risk for growth companies unless accompanied by falling revenue or negative margins.\n\n"
 
@@ -68,8 +69,31 @@ def assessor_node(state: OSINTState) -> OSINTState:
         )
     ])
 
-    # Format structured data inputs into clean string context blocks for the LLM
-    financials_str = str(state.financial_data) if state.financial_data else "No financial data available."
+        # Format structured data inputs into clean string context blocks for the LLM.
+    # IMPORTANT: yfinance's debtToEquity field is already expressed as a percentage
+    # (e.g. 18.86 means 18.86%, i.e. a real ratio of ~0.19) — NOT a raw decimal ratio.
+    # We label units explicitly here so the LLM never has to guess.
+    if state.financial_data:
+        fd = state.financial_data
+
+        def fmt(key, suffix=""):
+            val = fd.get(key)
+            if val is None or isinstance(val, str):
+                return val if val is not None else "N/A"
+            return f"{val}{suffix}"
+
+        financials_str = (
+            f"- Debt-to-Equity: {fmt('debt_to_equity', '%')} "
+            "(already expressed as a percentage; 100% = a 1:1 ratio)\n"
+            f"- Current Ratio: {fmt('current_ratio')}\n"
+            f"- Quick Ratio: {fmt('quick_ratio')}\n"
+            f"- Profit Margins: {fmt('profit_margins')}\n"
+            f"- Operating Margins: {fmt('operating_margins')}\n"
+            f"- P/E Ratio: {fmt('pe_ratio')}\n"
+            f"- Price-to-Book: {fmt('price_to_book')}"
+        )
+    else:
+        financials_str = "No financial data available."
     
     # Inject the publication date directly into the formatted string for the LLM to read
     news_str = "\n".join([f"- [{item.get('published', 'Unknown Date')}] {item.get('headline', item)}" for item in state.news_data]) if state.news_data else "No recent news available."
