@@ -306,9 +306,3 @@ The engine avoids binary "buy/sell" signals. Instead it uses a standard OSINT in
 ## Contributing
 
 Issues and pull requests are welcome. For significant changes, please open an issue first to discuss what you'd like to change.
-
----
-
-## License
-
-[MIT](LICENSE)
