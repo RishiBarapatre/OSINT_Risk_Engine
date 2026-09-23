@@ -8,7 +8,6 @@
 ![Groq](https://img.shields.io/badge/Groq-LLM_Inference-F55036)
 ![Docker](https://img.shields.io/badge/Docker-Multi--Stage_Build-2496ED?logo=docker&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?logo=streamlit&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
