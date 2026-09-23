@@ -266,8 +266,7 @@ osint-engine/
 ├── Dockerfile                 # Multi-stage build (builder → slim runner)
 ├── docker-compose.yml         # Two-service orchestration (backend + frontend)
 ├── requirements.txt           # Pip dependencies
-├── environment.yml            # Conda environment spec
-└── technical_analysis.md      # Deep-dive: every API surface and design decision
+└── environment.yml            # Conda environment spec
 ```
 
 ---
