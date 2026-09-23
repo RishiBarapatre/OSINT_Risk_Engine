@@ -4,6 +4,9 @@ venv/
 env/
 .venv/
 
+# Personal / local-only files (not for GitHub)
+technical_analysis.md
+
 # Python Cache
 __pycache__/
 *.py[cod]
